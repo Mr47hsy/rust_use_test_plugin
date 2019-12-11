@@ -1,8 +1,8 @@
 name: rust_use_test_plugin
 description: A plug-in for testing the flutter invocation of rust.
 version: 0.0.1
-author:
-homepage:
+author: mr47<824852163@qq.com>
+homepage: none
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  ffi: ^0.1.3
 
 dev_dependencies:
   flutter_test:

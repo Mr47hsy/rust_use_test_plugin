@@ -1,13 +1,29 @@
-import 'dart:async';
+import 'dart:ffi';
 
-import 'package:flutter/services.dart';
+import 'package:ffi/ffi.dart';
+
+typedef hello_world_c = Pointer<Utf8> Function(Pointer<Utf8>);
+
+typedef free_c = Pointer<Void> Function(Pointer<Utf8>);
 
 class RustUseTestPlugin {
-  static const MethodChannel _channel =
-      const MethodChannel('rust_use_test_plugin');
+  DynamicLibrary _rustLib = DynamicLibrary.open("libcallrust.so");
+  //这里有一点问题 在调用rust的free方法之前 Dart的GC有可能提前释放了内存 导致重复释放发生。
+  Pointer<Utf8> _wordPointer;
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  String helloWorld(String s) {
+    hello_world_c helloWorldFun = _rustLib
+        .lookup<NativeFunction<hello_world_c>>("hello_world")
+        .asFunction<hello_world_c>();
+    _wordPointer = helloWorldFun(Utf8.toUtf8(s));
+    return Utf8.fromUtf8(_wordPointer);
+  }
+
+  //在window平台表现没有问题 但是到了Android x86虚拟机会发生重复释放异常
+  close() {
+    free_c freeFun = _rustLib
+        .lookup<NativeFunction<free_c>>("free")
+        .asFunction<free_c>();
+    freeFun(_wordPointer);
   }
 }
