@@ -2,13 +2,34 @@
 
 A plug-in for testing the flutter invocation of rust.
 
-## Getting Started
+So far only Android has been tested.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+I wrote the automated build script,
+currently there is only CMD (init.cmd;build.cmd),
+shell will be done quickly.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Android Depend On
+- Android
+    - Android API Level 22 Installed
+    - NDK 
+    - Set Environment Variable ``` $ANDROID_HOME=SDK_Path;$NDK_HOME=SDK_Path/ndk-bundle ```
+    
+- [Rust](https://www.rust-lang.org/)
+    - target add (exec ``` rustup target add ```)
+        - aarch64-linux-android
+        - armv7-linux-androideabi
+        - i686-linux-android
+        - x86_64-linux-android
+    - cargo-ndk >= 0.5.0  (need cargo first and exec ``` cargo install cargo-ndk ```)
+- [Flutter](https://flutter.dev/)
+   - [Dart](https://dart.dev/) version >= 2.6
+   - Flutter 1.10.x dev channel build (Just exec ``` flutter channel dev ``` and ``` flutter upgrade ```)
+
+## IOS Depend On
+soon...
+
+### Easy Load
+If you've already installed rust 2018 and the Flutter 1.10.x.Just Exec ``` .\init.cmd ```
+
+## Start
+First exec ``` .\build.cmd ``` and run example.Have Fun

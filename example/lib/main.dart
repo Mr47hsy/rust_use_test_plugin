@@ -19,6 +19,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     RustUseTestPlugin rustUseTestPlugin = new RustUseTestPlugin();
     _word = rustUseTestPlugin.helloWorld("Yoohoo");
+//    这里由于重复释放内存可能导致bug
+//    rustUseTestPlugin.close();
   }
 
   @override
