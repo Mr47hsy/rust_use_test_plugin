@@ -18,12 +18,11 @@ call cargo ndk --target x86_64-linux-android --android-platform 22 -- build --ta
 call cargo ndk --target aarch64-linux-android --android-platform 22 -- build --target-dir=target/arm64 --release
 call cargo ndk --target armv7-linux-androideabi --android-platform 22 -- build --target-dir=target/armv7 --release
 
-set windows_x64_lib_path=%cd%/target/windows_x64/x86_64-pc-windows-msvc/release/callrust.dll
-set x86_lib_path=%cd%/target/x86/i686-linux-android/release/libcallrust.so
-set x64_lib_path=%cd%/target/x64/x86_64-linux-android/release/libcallrust.so
-set arm64_lib_path=%cd%/target/arm64/aarch64-linux-android/release/libcallrust.so
-set armv7_lib_path=%cd%/target/armv7/armv7-linux-androideabi/release/libcallrust.so
-echo %windows_x64_lib_path%
+set windows_x64_lib_path=%cd%\target\windows_x64\release\callrust.dll
+set x86_lib_path=%cd%\target\x86\i686-linux-android\release\libcallrust.so
+set x64_lib_path=%cd%\target\x64\x86_64-linux-android\release\libcallrust.so
+set arm64_lib_path=%cd%\target\arm64\aarch64-linux-android\release\libcallrust.so
+set armv7_lib_path=%cd%\target\armv7\armv7-linux-androideabi\release\libcallrust.so
 if not exist %windows_x64_lib_path% goto :Failed
 if not exist %x86_lib_path% goto :Failed
 if not exist %x64_lib_path% goto :Failed
@@ -31,35 +30,26 @@ if not exist %arm64_lib_path% goto :Failed
 if not exist %armv7_lib_path% goto :Failed
 echo ****** BUILD SUCCEEDED.NOW COPY LIBS ******
 
-cd .\..\..\
+cd ./../../
 if not exist windows md windows
 cd windows
 if not exist x64 md x64
-cd x64
-if exist callrust.dll del callrust.dll
 
-cd .\..\..\android\src\main
+cd ./../android/src/main
 if not exist jniLibs md jniLibs
 cd jniLibs
 if not exist arm64-v8a md arm64-v8a
 if not exist armeabi md armeabi
 if not exist x86 md x86
 if not exist x86_64 md x86_64
-cd arm64-v8a
-if exist libcallrust.so del libcallrust.so
-cd .\..\armeabi
-if exist libcallrust.so del libcallrust.so
-cd .\..\x86
-if exist libcallrust.so del libcallrust.so
-cd .\..\x86_64
-if exist libcallrust.so del libcallrust.so
-cd .\..\..\
+cd ./../
 
-copy %windows_x64_lib_path% .\..\..\..\windows\x64\callrust.dll
-copy %x86_lib_path% jniLibs\x86\libcallrust.so
-copy %x64_lib_path% jniLibs\x86_64\libcallrust.so
-copy %arm64_lib_path% jniLibs\arm64-v8a\libcallrust.so
-copy %armv7_lib_path% jniLibs\armeabi\libcallrust.so
+copy /y %windows_x64_lib_path% .\..\..\..\windows\x64
+copy /y %x86_lib_path% jniLibs\x86
+copy /y %x64_lib_path% jniLibs\x86_64
+copy /y %arm64_lib_path% jniLibs\arm64-v8a
+copy /y %armv7_lib_path% jniLibs\armeabi
 echo ****** COPY LIBS SUCCEEDED ******
+pause
 
 

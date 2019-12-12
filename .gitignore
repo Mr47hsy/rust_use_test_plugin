@@ -6,4 +6,8 @@
 
 build/
 
-.idea
+/.idea
+.so
+.dll
+
+windows/
